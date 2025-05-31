@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>دروس بايثون</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.18.1/full/pyodide.js"></script>
+  <style> body { font-family: 'Cairo', sans-serif; } </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <header class="bg-blue-600 text-white p-4 text-center">
+    <h1 class="text-3xl font-bold">دروس بايثون التفاعلية</h1>
+  </header>
+
+  <main class="p-6 max-w-4xl mx-auto">
+    <section class="mb-6">
+      <h2 class="text-xl font-bold mb-2">المتغيرات في بايثون</h2>
+      <p class="mb-4">في بايثون، نقدر نعرّف متغير بكل بساطة كالتالي:</p>
+      <pre class="bg-gray-200 p-4 rounded text-sm">name = "Ahmed"
+print("مرحبا", name)</pre>
+    </section>
+
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold mb-2">جرب الكود بنفسك:</h2>
+      <textarea id="python-code" class="w-full h-40 p-2 border rounded bg-white font-mono text-sm">name = "Ahmed"
+print("مرحبا", name)</textarea>
+      <button onclick="runCode()" class="bg-blue-600 text-white px-4 py-2 mt-2 rounded hover:bg-blue-700">تشغيل الكود</button>
+      <pre id="output" class="bg-black text-green-400 p-4 mt-4 rounded h-40 overflow-auto"></pre>
+    </section>
+  </main>
+
+  <footer class="bg-gray-200 text-center p-4 mt-10">
+    <p>© 2025 تعلم بايثون - جميع الحقوق محفوظة</p>
+  </footer>
+
+<script>
+  let pyodideReady = loadPyodide();
+
+  async function runCode() {
+    const output = document.getElementById("output");
+    output.textContent = "جارٍ تنفيذ الكود...";
+    let pyodide = await pyodideReady;
+    try {
+      let code = document.getElementById("python-code").value;
+      let result = await pyodide.runPythonAsync(code);
+      output.textContent = result || "تم تنفيذ الكود بنجاح.";
+    } catch (err) {
+      output.textContent = "خطأ: " + err;
+    }
+  }
+</script>
+
+</body>
+</html>
