@@ -7,8 +7,11 @@
   <title>دروس بايثون</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.18.1/full/pyodide.js"></script>
-  <style> body { font-family: 'Cairo', sans-serif; } </style>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+  <style>
+    body { font-family: 'Cairo', sans-serif; }
+    textarea { direction: ltr; }
+  </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
 
@@ -18,7 +21,7 @@
 
   <main class="p-6 max-w-4xl mx-auto">
     <section class="mb-6">
-      <h2 class="text-xl font-bold mb-2">المتغيرات في بايثون</h2>
+      <h2 class="text-xl font-bold mb-2">الدرس 1: المتغيرات والطباعة</h2>
       <p class="mb-4">في بايثون، نقدر نعرّف متغير بكل بساطة كالتالي:</p>
       <pre class="bg-gray-200 p-4 rounded text-sm">name = "Ahmed"
 print("مرحبا", name)</pre>
@@ -29,7 +32,7 @@ print("مرحبا", name)</pre>
       <textarea id="python-code" class="w-full h-40 p-2 border rounded bg-white font-mono text-sm">name = "Ahmed"
 print("مرحبا", name)</textarea>
       <button onclick="runCode()" class="bg-blue-600 text-white px-4 py-2 mt-2 rounded hover:bg-blue-700">تشغيل الكود</button>
-      <pre id="output" class="bg-black text-green-400 p-4 mt-4 rounded h-40 overflow-auto"></pre>
+      <pre id="output" class="bg-black text-green-400 p-4 mt-4 rounded h-40 overflow-auto text-sm"></pre>
     </section>
   </main>
 
@@ -38,18 +41,18 @@ print("مرحبا", name)</textarea>
   </footer>
 
 <script>
-  let pyodideReady = loadPyodide();
+  let pyodideReadyPromise = loadPyodide();
 
   async function runCode() {
-    const output = document.getElementById("output");
-    output.textContent = "جارٍ تنفيذ الكود...";
-    let pyodide = await pyodideReady;
+    const outputElement = document.getElementById("output");
+    const code = document.getElementById("python-code").value;
+    outputElement.textContent = "جارٍ تنفيذ الكود...";
     try {
-      let code = document.getElementById("python-code").value;
+      let pyodide = await pyodideReadyPromise;
       let result = await pyodide.runPythonAsync(code);
-      output.textContent = result || "تم تنفيذ الكود بنجاح.";
+      outputElement.textContent = result !== undefined ? result : "تم تنفيذ الكود.";
     } catch (err) {
-      output.textContent = "خطأ: " + err;
+      outputElement.textContent = "خطأ: " + err;
     }
   }
 </script>
